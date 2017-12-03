@@ -1,0 +1,115 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>
+        City Portal
+    </title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css">
+    <link href="resources/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <h1 class="text-center">City Portal</h1>
+    <div id="container">
+        <div class="add_city add_link" id="add_city" data-bind="click: addCity, clickBubble: false">
+            Add New City
+        </div>
+
+        <div class="panel-group" id="accordion" data-bind="foreach: cities">
+            <div class="panel panel-default">
+                <a class="toggleCity" data-toggle="collapse" data-bind="attr: {'href': hrefAttr}">
+                    <div class="block city_block container well">
+                        <div class="button_left del_btn" data-bind="click: $root.deleteCity, clickBubble: false">X</div>
+                        <div class="button_left edit_button" data-bind="click: $root.selectCity, clickBubble: false">E</div>
+                        <div class="city_name name" data-bind="text: name"></div>
+                        <div class="areas_name details" data-bind="text: cityAreasNames()"></div>
+                        <div class="button_right pol_btn" data-bind="css: {button_right_true: isPolluted}, click: $root.toggleButtons.bind($data, isPolluted), clickBubble: false">P</div>
+                        <div class="button_right crim_btn" data-bind="css: {button_right_true: isCriminal}, click: $root.toggleButtons.bind($data, isCriminal), clickBubble: false">C</div>
+                        <div class="button_right ind_btn" data-bind="css: {button_right_true: isIndustrial}, click: $root.toggleButtons.bind($data, isIndustrial), clickBubble: false">I</div>
+                    </div>
+                </a>
+
+                <div class="panel-collapse collapse" data-bind="attr: { 'id': id }">
+                    <div class="areas_block">
+                        <div class="add_area add_link"  data-bind="click: $root.addArea, clickBubble: false">
+                            Add New Area
+                        </div>
+                        <!-- ko foreach: cityAreas -->
+                        <div class="block area_block container well">
+                            <div class="button_left del_btn" data-bind="click: $root.deleteArea.bind($data, $parent), clickBubble: false">X</div>
+                            <div class="button_left edit_button" data-bind="click: $root.selectArea, clickBubble: false">E</div>
+                            <div class="area_name name" data-bind="text: name"></div>
+                            <div class="area_description details" data-bind="text: description"></div>
+                            <div class="area_citizens details" data-bind="text: citizens() == 0 ? 'Unknown' : citizens"></div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="edit_city edit_popup" id="edit_city" data-bind="with: cityForEditing">
+            <div class="edit_title">
+                <h4>Edit city</h4>
+            </div>
+            <form>
+                <div class="edit_block">
+                    <label class="city_name_label">City Name  <input type="text" value="" id="inputCityName" class="city_name_input details" required data-bind="value: name"></label>
+                </div>
+                <div class="edit_buttons">
+                    <label>
+                        Is Industrial
+                        <div class="button_right ind_btn btn_edit_city" id="ind_button" data-bind="css: {button_right_true: isIndustrial}, click: $root.toggleButtons.bind($data, isIndustrial), clickBubble: false">I</div>
+                    </label>
+                    <label>
+                        Is Criminal
+                        <div class="button_right crim_btn btn_edit_city" id="crim_button" data-bind="css: {button_right_true: isCriminal}, click: $root.toggleButtons.bind($data, isCriminal), clickBubble: false">C</div>
+                    </label>
+                    <label>
+                        Is Polluted
+                        <div class="button_right pol_btn btn_edit_city" id="pol_button" data-bind="css: {button_right_true: isPolluted}, click: $root.toggleButtons.bind($data, isPolluted), clickBubble: false">P</div>
+                    </label>
+                    <div class="empty"></div>
+                </div>
+                <div class="footer_buttons">
+                    <div class="ft_button cancel_btn" id="cancel_btn_city" data-bind="click: $root.revertItem">Cancel</div>
+                    <div class="ft_button save_btn" id="submit_btn_city" data-bind="click: $root.acceptCity">Save</div>
+                    <div class="empty"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="edit_area edit_popup" id="edit_area"  data-bind="with: areaForEditing">
+            <div class="edit_title">
+                <h4>Edit area</h4>
+            </div>
+            <form>
+                <div class="edit_buttons">
+                    <div class="edit_block">
+                        <label class="city_name_label">Name  <input type="text" value="" id="inputAreaName" class="city_name_input details" required data-bind="value: name"></label>
+                    </div>
+                    <div class="edit_block">
+                        <label class="city_name_label">Description  <input type="text" value="" id="inputAreaDescription" class="city_name_input details" required data-bind="value: description"></label>
+                    </div>
+                    <div class="edit_block">
+                        <label class="city_name_label">Citizens  <input type="text" value="" id="inputAreaCitizens" class="city_name_input details" data-bind="value: citizens"></label>
+                        <div class="empty"></div>
+                    </div>
+                </div>
+                <div class="footer_buttons">
+                    <div class="ft_button cancel_btn" id="cancel_btn_city" data-bind="click: $root.revertItem">Cancel</div>
+                    <div class="ft_button save_btn" id="submit_btn_city" data-bind="click: $root.acceptArea">Save</div>
+                    <div class="empty"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src='vendors/knockout/knockout-3.4.2.js'></script>
+    <script src='vendors/knockout/knockout.validation.min.js'></script>
+    <script src="resources/js/script.js"></script>
+</body>
+</html>	
